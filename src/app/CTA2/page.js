@@ -14,7 +14,7 @@ const CTA2 = () => {
             <div className="git-div">
                 <div className="git-heading">
                     <p>
-                        Summarized by Locale.ai </p> <button>Bot</button>
+                        Bug Identifier </p> <button>Bot</button>
                    
                 </div>
                 <div className="git-content">

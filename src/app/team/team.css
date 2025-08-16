@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
   /* background: linear-gradient(135deg, #111827 0%, #1e293b 50%, #0f172a 100%); */
   color: white;
 }
@@ -65,7 +65,26 @@ body {
 }
 
 @media (max-width: 768px) {
+  
   .team-header h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
+
+}
+
+@media (max-width: 600px) {
+     .team-header p {
+    font-size: 1.1rem;
+    text-align: left;
+  }
+
+
+  .team-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.team-card p {
+ text-align: left;
+}
 }

@@ -25,7 +25,7 @@
 }
 
 .nav-left .logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #ffffff;
   text-decoration: none;
@@ -107,6 +107,9 @@
 }
 
 @media (max-width: 768px) {
+  .nav-container{
+    height: 40px;
+  }
   .hamburger {
     display: flex;
   }

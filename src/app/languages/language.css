@@ -60,4 +60,8 @@ p{
   .container {
     max-width: 90%;
   }
+
+  h1{
+    font-size: 1.7rem;
+  }
 }
