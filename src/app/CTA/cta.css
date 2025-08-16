@@ -208,13 +208,24 @@ button:active {
     display: none;
   }
 }
-
 @media (max-width: 480px) {
   .cta-div {
     padding: 3rem 1rem;
+    /* padding-top: 20px !important; */
+    height: fit-content;
+    margin-bottom: 80px;
   }
-   .cta-text2 h2{
+  .cta-text2{
+    font-size: 1rem !important;
+    width: 100%;
+  }
+  .cta-text2 h2{
     font-size: 20px;
+ 
+  }
+   .cta-text2 p{
+    font-size: 0.75rem;
+    width: 90vw !important;
   }
 
   .cta-text2 button {
@@ -224,7 +235,7 @@ button:active {
 
   .git-div {
     padding: 1rem;
-    width: 85vw;
+    width: 80vw;
   }
 
   .git-heading p {
