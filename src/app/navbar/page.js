@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './navbar.css';
-import  jwtDecode from 'jwt-decode';
+import  {jwtDecode} from 'jwt-decode';
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
