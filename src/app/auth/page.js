@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,7 +16,7 @@ export default function AuthCallback() {
     } else {
       router.push("/auth?error=missing_token");
     }
-  }, []);
+  }, [router, searchParams]);
 
   return <p>Redirecting...</p>;
 }
