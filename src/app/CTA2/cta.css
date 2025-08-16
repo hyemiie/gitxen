@@ -1,0 +1,389 @@
+.cta-div2 {
+  /* background: 
+    radial-gradient(ellipse at top right, rgba(34, 197, 94, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0a0c10 100%);
+  padding: 6rem 2rem; */
+  position: relative;
+  overflow: hidden;
+  height: 80vh;
+
+}
+
+.cta-div2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-drift 25s linear infinite;
+  pointer-events: none; */
+}
+
+/* @keyframes grid-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, 40px); }
+} */
+
+.cta-div2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: center;
+  padding: 50px;
+  /* background-color: #16a34a; */
+}
+
+.cta-text {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-text h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff, #34d399, #22c55e);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  position: relative;
+}
+
+.cta-text h2::before {
+  content: '// ';
+  color: rgba(34, 197, 94, 0.6);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8em;
+  position: absolute;
+  left: -3rem;
+  top: 0;
+}
+
+.cta-text p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+  color: #d6dce3;
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+  text-align: left;
+}
+
+.cta-text button {
+  /* padding: 1rem 2rem; */
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #0a0c10;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3);
+  font-family: 'JetBrains Mono', monospace;
+  width: fit-content;
+}
+
+.cta-text button::before {
+  content: 'npm run ';
+  opacity: 0.8;
+}
+
+.cta-text button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(34, 197, 94, 0.4);
+}
+
+.cta-text button:active {
+  transform: translateY(-2px);
+}
+
+.git-div {
+  background: rgba(81, 91, 82, 0.8);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: 16px;
+  /* padding: 2rem; */
+  position: relative;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.git-div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+  opacity: 0.6;
+}
+
+.git-heading {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+.git-heading p {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.git-heading button {
+  background: rgba(34, 197, 94, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: default;
+  transition: all 0.3s ease;
+}
+
+.git-heading button:hover {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.git-content {
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.git-content::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 2px;
+  height: calc(100% - 1rem);
+  background: rgba(34, 197, 94, 0.3);
+  border-radius: 1px;
+}
+
+.git-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.git-content h3:first-child {
+  color: #34d399;
+}
+
+.git-content span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  margin-bottom: 0.25rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.span1 {
+  background: #22c55e;
+  animation-delay: 0s;
+}
+
+.span2 {
+  background: #22c55e;
+  animation-delay: 0.5s;
+}
+
+.span3 {
+  background: #f59e0b;
+  animation-delay: 1s;
+}
+
+.span4 {
+  background: #ef4444;
+  animation-delay: 1.5s;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Floating decorative elements */
+.cta-div2::after {
+  content: 'git diff --staged';
+  position: absolute;
+  top: 15%;
+  left: 5%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: rgba(34, 197, 94, 0.2);
+  transform: rotate(-12deg);
+  z-index: 1;
+  animation: float 12s ease-in-out infinite;
+}
+
+/* Additional floating code snippets */
+.cta-text::after {
+  content: 'AI.summarize(pullRequest)';
+  position: absolute;
+  bottom: -2rem;
+  right: -2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(34, 197, 94, 0.25);
+  transform: rotate(8deg);
+  z-index: 1;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+.git-div::after {
+  content: '+ 247 lines, - 15 lines';
+  position: absolute;
+  bottom: -1.5rem;
+  right: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(34, 197, 94, 0.3);
+  z-index: 1;
+}
+
+@media (max-width: 1024px) {
+  .cta-div2 {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+ .cta-text h2{
+    font-size: 27px;
+  }
+ 
+
+  .cta-text h2::before {
+    display: none;
+  }
+
+  .cta-text {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cta-text p {
+    text-align: center;
+    width: 100vw !important;
+  }
+
+  .git-div {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .cta-div2 {
+    padding: 4rem 1.5rem;
+    gap: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .cta-text h2{
+    font-size: 24px;
+  }
+
+  .git-heading{
+    border-radius: 1px !important;
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    p{
+      width: 100%;
+      display: flex;
+      
+    }
+
+    button{
+      height: 30px;
+    }
+  }
+
+  .git-div {
+    padding: 1.5rem;
+    width: 90%;
+    height: fit-content;
+  }
+
+  .git-content {
+    padding-left: 0.75rem;
+  }
+
+  .cta-text::after,
+  .cta-div2::after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-div2 {
+    padding: 3rem 1rem;
+  }
+   .cta-text h2{
+    font-size: 20px;
+  }
+
+  .cta-text button {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .git-div {
+    padding: 1rem;
+    width: 85vw;
+  }
+
+  .git-heading p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .git-content span,
+  .cta-div2::before,
+  .cta-text::after,
+  .cta-div2::after {
+    animation: none;
+  }
+}

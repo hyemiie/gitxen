@@ -1,0 +1,87 @@
+.addnewPage {
+  background-color: rgb(233, 237, 235);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.addnewPage h2 {
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.newBtndiv {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  flex-wrap: wrap;
+}
+
+.newInput {
+  /* flex: 1; */
+  width: 500px;
+  height: 50px;
+  border-radius: 10px;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+}
+
+button {
+  background-color: #236039;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #105424;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.send {
+  font-size: 20px;
+}
+
+/* 
+
+@media(max-width: 400px) {
+  .newBtndiv{
+    background-color: #105424 !important;
+    
+
+
+   
+  }
+
+   .newInput{
+      min-width: 40% !important;
+    }
+    button{
+    }
+  
+} */
