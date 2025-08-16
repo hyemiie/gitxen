@@ -19,7 +19,7 @@ const Page = () => {
   return (
     <div className="heropage">
     {/* <div className="overlay"></div> */}
-    {/* <NavBar/> */}
+    <NavBar/>
       <div className="hero-div">
         <h2>Talk to Your Code. Fix It Together.</h2>
         <h3>for Modern Teams</h3>

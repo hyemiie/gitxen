@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './navbar.css';
-import { jwtDecode } from 'jwt-decode';
+import  jwtDecode from 'jwt-decode';
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,10 +28,35 @@ export default function NavBar() {
 // }, []);
 
 
+// useEffect(() => {
+//   const token = localStorage.getItem("token");
+
+//   if (token && typeof token === "string") {
+//     try {
+//       const decoded = jwtDecode(token);
+//       let user_id = decoded.sub;
+
+//       if (!Number.isInteger(user_id)) {
+//         user_id = decoded.user?.id;
+//       }
+
+//       user_id = parseInt(user_id, 10);
+
+//       if (user_id) {
+//         setLoggedIn(true);
+//       } else {
+//         console.warn("No user ID found in token");
+//       }
+//     } catch (err) {
+//       console.warn("Failed to decode token:", err);
+//     }
+//   }
+// }, []);
+
 useEffect(() => {
   const token = localStorage.getItem("token");
 
-  if (token && typeof token === "string") {
+  if (token) { 
     try {
       const decoded = jwtDecode(token);
       let user_id = decoded.sub;
@@ -52,7 +77,6 @@ useEffect(() => {
     }
   }
 }, []);
-
 
   return (
     <nav className="nav-container">
