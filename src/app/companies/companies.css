@@ -151,10 +151,12 @@
 
   .section-title {
     font-size: 0.65rem;
+    display: none;
   }
 
   .trusted-text {
     font-size: 0.8rem;
+    
   }
 
   .logo-item {
