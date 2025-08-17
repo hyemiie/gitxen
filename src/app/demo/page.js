@@ -20,6 +20,7 @@ export default function Home() {
   const [visibility, setVisibility] = useState(true);
   const [userID, setUserID] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resultLoading, setResultLoading] = useState(false);
   const [error, setError] = useState(null);
   const [messages, setMessages] = useState([
     { sender: "ai", text: "Hello! How can I help you today?" },
@@ -63,6 +64,7 @@ export default function Home() {
   };
 
   const send_message = async () => {
+    setResultLoading(true)
     if (!input.trim() || !repo) return;
 
     const userMessage = { sender: "user", text: input };
@@ -85,11 +87,15 @@ export default function Home() {
       const aiMessage = { sender: "ai", text: summary };
 
       setMessages((prev) => [...prev, aiMessage]);
+      setResultLoading(false)
+
 
       if (activeChat) {
         await saveChatMessage(activeChat.id, "ai", summary);
       }
+
     } catch (error) {
+      setResultLoading(false)
       console.error("Error sending message:", error);
       const errorMessage = {
         sender: "ai",
@@ -168,6 +174,8 @@ useEffect(() => {
 
 
   const fetchRepos = async (user_id) => {
+    
+    console.log('user id' , user_id)
     setLoading(true);
     setError(null);
 
@@ -177,7 +185,7 @@ useEffect(() => {
           user_id: parseInt(user_id),
         },
       });
-      console.log('fcvgbhn')
+      console.log('fcvgbhn', response)
 
       setChats(response.data.repos);
     } catch (err) {
@@ -204,13 +212,14 @@ useEffect(() => {
   };
 
   const handleRepoAdded = (newRepo) => {
-    setChats((prev) => [...prev, newRepo]);
+    fetchRepos(newRepo.user_id)
+    // setChats((prev) => [...prev, newRepo]);
     setRepo(newRepo.repo_link);
     setActiveChat(newRepo);
     setMessages([
       {
         sender: "ai",
-        text: `Repository "${newRepo.repo_name}" added successfully! How can I help you?`,
+        text: `Repository "${newRepo.name}" added successfully! How can I help you?`,
       },
     ]);
     setShowAddRepo(false);
@@ -291,7 +300,7 @@ useEffect(() => {
                   }
                   onClick={() => handleRepoSelection(chat)}
                 >
-                  {chat.repo_name.trim().replace(/^"|"$/g, "")}
+                  {chat.repo_name}
                 </li>
               ))}
             </ul>
@@ -360,7 +369,86 @@ useEffect(() => {
                    <div>No Repo links yet</div>}
                 </div>
               </div>
+              <div className="input-div">
+              {resultLoading ?           <div aria-label="Loading..." role="status" className="loader">
+  <svg className="icon" viewBox="0 0 256 256">
+    <line
+      x1="128"
+      y1="32"
+      x2="128"
+      y2="64"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="195.9"
+      y1="60.1"
+      x2="173.3"
+      y2="82.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="224"
+      y1="128"
+      x2="192"
+      y2="128"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="195.9"
+      y1="195.9"
+      x2="173.3"
+      y2="173.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="128"
+      y1="224"
+      x2="128"
+      y2="192"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="60.1"
+      y1="195.9"
+      x2="82.7"
+      y2="173.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="32"
+      y1="128"
+      x2="64"
+      y2="128"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+    <line
+      x1="60.1"
+      y1="60.1"
+      x2="82.7"
+      y2="82.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="24"
+    ></line>
+  </svg>
+  <span className="loading-text">Loading...</span>
+</div> : ""}
               <div className="input-area">
+
                 <input
                   type="text"
                   value={input}
@@ -379,6 +467,7 @@ useEffect(() => {
                 >
                   <AiOutlineSend />
                 </button>
+              </div>
               </div>
             </main>
           )}

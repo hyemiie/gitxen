@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './addnew.css';
 import { AiOutlineSend } from 'react-icons/ai';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const Addnew = ({ onRepoAdded, userId = 1 }) => { 
   const [repo, setRepo] = useState('');
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState("");
   const [repo_list, setRepoList] = useState(false);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) { 
+      try {
+        const decoded = jwtDecode(token);
+        let user_id = decoded.sub;
+        if (!Number.isInteger(user_id)) {
+          user_id = decoded.user?.id;
+        }
+  
+        user_id = parseInt(user_id, 10);
+  
+        if (user_id) {
+          setUser(user_id);
+        } else {
+          console.warn("No user ID found in token");
+        }
+      } catch (err) {
+        console.warn("Failed to decode token:", err);
+      }
+    }
+  }, []);
 
   const handleSends = async () => {
     if (!repo.trim()) {
@@ -30,11 +57,11 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
       setStatus('Saving repository...');
 
       const saveResponse = await axios.post('https://git-chat.zeabur.app/repos/', {
-        user_id: 1,
+        user_id:user,
         repo_name: repoName,
         repo_link: repo
       });
-      console.log('save response',saveResponse, localStorage.getItem("userID"))
+      console.log('save response',saveResponse)
 
       setStatus('Analysis complete!');
       
