@@ -96,7 +96,7 @@ export default function Home() {
     }
 
     try {
-      const response = await axios.post("https://git-chat.zeabur.app/embed-repo", {
+      const response = await axios.post("http://127.0.0.1:8000/embed-repo", {
         repo_path: repo,
         query: currentInput,
       });
@@ -130,7 +130,7 @@ export default function Home() {
 
     try {
       const response = await axios.post(
-        "https://git-chat.zeabur.app/chat/add",
+        "http://127.0.0.1:8000/chat/add",
         {
           user_id: user_id,
           repo_id: repoId,
@@ -149,7 +149,7 @@ export default function Home() {
   const loadChatHistory = async (repoId) => {
     try {
       const response = await axios.post(
-        "https://git-chat.zeabur.app/chat/list",
+        "http://127.0.0.1:8000/chat/list",
         {
           repo_id: parseInt(repoId),
         }
@@ -207,14 +207,16 @@ export default function Home() {
 
     try {
       const response = await axios.get(
-        "https://git-chat.zeabur.app/repos/list",
+        "http://127.0.0.1:8000/repos/list",
         {
           params: {
             user_id: parseInt(user_id),
           },
         }
       );
+      console.log('response', response)
       setChats(response.data.repos);
+
     } catch (err) {
       if (err.response) {
         setError(err.response.data.detail || "Something went wrong.");

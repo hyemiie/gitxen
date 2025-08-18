@@ -140,7 +140,7 @@ body{
   width: 30%;
   padding: 20px;
   /* background: var(--panel-bg); */
-  background: transparent;
+  background: rebeccapurple !important;
   color: var(--text-color);
   border-left: 1px solid var(--border-color);
   border-radius: 8px;
@@ -148,6 +148,8 @@ body{
 
 .result-section {
   margin-bottom: 20px;
+  background: rebeccapurple !important;
+
 }
 
 .result-section h3 {
