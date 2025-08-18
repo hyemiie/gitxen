@@ -96,7 +96,7 @@ export default function Home() {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/embed-repo", {
+      const response = await axios.post("https://git-chat.zeabur.app/embed-repo", {
         repo_path: repo,
         query: currentInput,
       });
