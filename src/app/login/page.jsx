@@ -43,7 +43,6 @@ const AuthComponent = () => {
       );
       const result = response.data;
 
-      console.log("API response:", result);
 
       if (result.status === "success") {
         if (endpoint === "/signup") {
