@@ -58,17 +58,17 @@ export default function NavBar() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
+    // if (!token) {
+    //   window.location.href = "/login";
+    //   return;
+    // }
 
     let decoded;
     try {
       decoded = jwtDecode(token);
     } catch (err) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      // window.location.href = "/login";
       return;
     }
 

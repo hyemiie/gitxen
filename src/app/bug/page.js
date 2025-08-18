@@ -51,7 +51,7 @@ const BugPage = () => {
         { timeout: 240000 }
       );
 
-      const data = response.data.data.data;
+      const data = response.data?.data?.data || response.data?.data;
       setBugSuggestions(data.suggestion);
       setBugType(data.bug_type);
       setCodeDescription(data.description);
