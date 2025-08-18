@@ -22,19 +22,15 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
       try {
         const decoded = jwtDecode(token);
         let user_id = Number(decoded.sub);
-        console.log("hbnjmk,", user_id)
         if (!user_id){
-          console.log("nooo,")
 
           user_id = Number(decoded.user?.id);
-          console.log("user id,", decoded.user?.id)
         }
 
 
         if (!Number.isInteger(user_id)) {
           throw new Error("Invalid user_id");
         }
-          console.log('user_id', user_id)
 
         if (user_id) {
           setUser(user_id);
@@ -58,7 +54,7 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
       setIsLoading(true);
       setStatus('Cloning repository...');
 
-      const analyzeResponse = await axios.post('http://127.0.0.1:8000/analyze-repo', {
+      const analyzeResponse = await axios.post('https://git-chat.zeabur.app/analyze-repo', {
         repo_path: repo, 
       });
       
@@ -67,7 +63,7 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
 
       setStatus('Saving repository...');
 
-      const saveResponse = await axios.post('http://127.0.0.1:8000/repos/', {
+      const saveResponse = await axios.post('https://git-chat.zeabur.app/repos/', {
         user_id:user,
         repo_name: repoName,
         repo_link: repo
