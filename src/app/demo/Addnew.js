@@ -14,17 +14,22 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
+      console.log('token', token)
+    if (!token) {
+    window.location.href = "/login";
+    return;
+  }
     if (token) { 
       try {
         const decoded = jwtDecode(token);
+        console.log("token", decoded)
         let user_id = decoded.sub;
+       user_id = Number(user_id ?? decoded.user?.id);
+
         if (!Number.isInteger(user_id)) {
-          user_id = decoded.user?.id;
+          throw new Error("Invalid user_id");
         }
-  
-        user_id = parseInt(user_id, 10);
-  
+
         if (user_id) {
           setUser(user_id);
         } else {
@@ -34,6 +39,7 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
         console.warn("Failed to decode token:", err);
       }
     }
+
   }, []);
 
   const handleSends = async () => {

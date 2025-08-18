@@ -1,5 +1,6 @@
 import React from 'react'
 import './cta.css'
+import Link from 'next/link'
 
 const CTA = () => {
     return (
@@ -8,7 +9,7 @@ const CTA = () => {
                 <h2>Smart Bug Detection</h2>
                 {/* <p>Get instant context with AI summaries on every pull request,<br/> helping your team save time on code reviews.</p> */}
                 <p>Find logic errors, bad patterns, and performance slowdowns before they break your code</p>
-                <button>Try it out </button>
+                <button><Link href="/bug">Try it out </Link></button>
             </div>
             <div className="git-div">
                 <div className="git-heading">
