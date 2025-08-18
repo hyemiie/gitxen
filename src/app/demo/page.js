@@ -32,6 +32,24 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
 
+  const steps = ["Cloning...", "Analyzing...", "Checking...", "Thinking..."];
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (resultLoading) {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < steps.length - 1) {
+          i++;
+          setStepIndex(i);
+        }
+      }, 1500); // 1.5s per step
+      return () => clearInterval(interval);
+    } else {
+      setStepIndex(0);
+    }
+  }, [resultLoading]);
+
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -44,9 +62,9 @@ export default function Home() {
     };
 
     checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
-    return () => window.removeEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
   const toggleSidebar = () => {
@@ -78,7 +96,7 @@ export default function Home() {
     }
 
     try {
-      const response = await axios.post("https://git-chat.zeabur.app/embed-repo", {
+      const response = await axios.post("http://127.0.0.1:8000/embed-repo", {
         repo_path: repo,
         query: currentInput,
       });
@@ -87,15 +105,13 @@ export default function Home() {
       const aiMessage = { sender: "ai", text: summary };
 
       setMessages((prev) => [...prev, aiMessage]);
-      setResultLoading(false)
-
+      setResultLoading(false);
 
       if (activeChat) {
         await saveChatMessage(activeChat.id, "ai", summary);
       }
-
     } catch (error) {
-      setResultLoading(false)
+      setResultLoading(false);
       console.error("Error sending message:", error);
       const errorMessage = {
         sender: "ai",
@@ -113,12 +129,15 @@ export default function Home() {
     const user_id = parseInt(userID);
 
     try {
-      const response = await axios.post("https://git-chat.zeabur.app/chat/add", {
-        user_id: user_id,
-        repo_id: repoId,
-        sender: sender,
-        message_text: messageText,
-      });
+      const response = await axios.post(
+        "https://git-chat.zeabur.app/chat/add",
+        {
+          user_id: user_id,
+          repo_id: repoId,
+          sender: sender,
+          message_text: messageText,
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -129,9 +148,12 @@ export default function Home() {
 
   const loadChatHistory = async (repoId) => {
     try {
-      const response = await axios.post("https://git-chat.zeabur.app/chat/list", {
-        repo_id: parseInt(repoId),
-      });
+      const response = await axios.post(
+        "https://git-chat.zeabur.app/chat/list",
+        {
+          repo_id: parseInt(repoId),
+        }
+      );
 
       if (response.data.status === "success" && response.data.data.length > 0) {
         const messages = response.data.data.map((msg) => ({
@@ -150,42 +172,50 @@ export default function Home() {
     }
   };
 
-useEffect(() => {
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  console.log("Decoded token:", decoded);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
 
-  let user_id = decoded.sub;
+    let decoded;
+    try {
+      decoded = jwtDecode(token);
+    } catch (err) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+      return;
+    }
 
-  if (!Number.isInteger(user_id)) {
-    user_id = decoded.user?.id;
-  }
+    let user_id = parseInt(decoded.sub, 10);
+    if (isNaN(user_id)) {
+      user_id = parseInt(decoded.user?.id, 10);
+    }
 
-  user_id = parseInt(user_id, 10); 
-
-  if (user_id) {
-    fetchRepos(user_id);
-    setUserID(user_id);
-  } else {
-    console.warn("No user ID found in localStorage");
-  }
-}, []);
-
-
+    if (user_id) {
+      fetchRepos(user_id);
+      setUserID(user_id);
+    } else {
+      console.warn("No valid user ID found in token");
+    }
+  }, []);
 
   const fetchRepos = async (user_id) => {
-    
-    console.log('user id' , user_id)
+    console.log("user id", user_id);
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get("https://git-chat.zeabur.app/repos/list", {
-        params: {
-          user_id: parseInt(user_id),
-        },
-      });
-      console.log('fcvgbhn', response)
+      const response = await axios.get(
+        "https://git-chat.zeabur.app/repos/list",
+        {
+          params: {
+            user_id: parseInt(user_id),
+          },
+        }
+      );
+      console.log("fcvgbhn", response);
 
       setChats(response.data.repos);
     } catch (err) {
@@ -203,7 +233,7 @@ useEffect(() => {
     setActiveChat(chat);
     setRepo(chat.repo_link);
     setShowAddRepo(false);
-    
+
     if (isMobile) {
       setShowMobileOverlay(false);
     }
@@ -212,7 +242,7 @@ useEffect(() => {
   };
 
   const handleRepoAdded = (newRepo) => {
-    fetchRepos(newRepo.user_id)
+    fetchRepos(newRepo.user_id);
     // setChats((prev) => [...prev, newRepo]);
     setRepo(newRepo.repo_link);
     setActiveChat(newRepo);
@@ -223,7 +253,7 @@ useEffect(() => {
       },
     ]);
     setShowAddRepo(false);
-    
+
     if (isMobile) {
       setShowMobileOverlay(false);
     }
@@ -254,18 +284,24 @@ useEffect(() => {
       </Head>
 
       {isMobile && (
-        <div 
-          className={`mobile-overlay ${showMobileOverlay ? 'active' : ''}`}
+        <div
+          className={`mobile-overlay ${showMobileOverlay ? "active" : ""}`}
           onClick={closeMobileSidebar}
         />
       )}
 
       <div className="layout">
         {(visibility && !isMobile) || (isMobile && showMobileOverlay) ? (
-          <aside className={`sidebar ${isMobile && showMobileOverlay ? 'mobile-visible' : ''}`}>
+          <aside
+            className={`sidebar ${
+              isMobile && showMobileOverlay ? "mobile-visible" : ""
+            }`}
+          >
             <div className="side-head">
-              <div className="logo"><Link href="/home">Gitxen</Link></div>
-              <button 
+              <div className="logo">
+                <Link href="/home">Gitxen</Link>
+              </div>
+              <button
                 onClick={toggleSidebar}
                 className="mobile-menu-button"
                 aria-label="Toggle menu"
@@ -279,40 +315,44 @@ useEffect(() => {
                 )}
               </button>
             </div>
-            
+
             <div className="sidebar-header">
               <button
                 onClick={() => setShowAddRepo(true)}
                 style={{ marginTop: "10px" }}
               >
-                <AiOutlinePlus/> Add Repo
+                <AiOutlinePlus /> Add Repo
               </button>
             </div>
 
             <ul className="chat-list">
               {loading && <li>Loading repositories...</li>}
               {error && <li className="error">Error: {error}</li>}
-              {chats.map((chat, i) => (
-                <li
-                  key={i}
-                  className={
-                    chat.repo_name === activeChat?.repo_name ? "active" : ""
-                  }
-                  onClick={() => handleRepoSelection(chat)}
-                >
-                  {chat.repo_name}
-                </li>
-              ))}
+              {chats.length === 0 ? (
+                <li>No repo yet</li>
+              ) : (
+                chats.map((chat, i) => (
+                  <li
+                    key={i}
+                    className={
+                      chat.repo_name === activeChat?.repo_name ? "active" : ""
+                    }
+                    onClick={() => handleRepoSelection(chat)}
+                  >
+                    {chat.repo_name}
+                  </li>
+                ))
+              )}
             </ul>
           </aside>
         ) : (
           <div className="sidebar-mini">
-            <button 
+            <button
               onClick={toggleSidebar}
               className="maxi"
               aria-label="Open menu"
             >
-            <AiOutlineArrowRight/>
+              <AiOutlineArrowRight />
               {/* {isMobile ? <AiOutlineMenu /> : <AiOutlineArrowRight />} */}
             </button>
           </div>
@@ -321,23 +361,23 @@ useEffect(() => {
         <div className="middle">
           <div className="chat-header">
             {isMobile && !showMobileOverlay && (
-              <button 
+              <button
                 onClick={toggleSidebar}
                 className="mobile-menu-button"
-                style={{position: 'absolute', left: '10px'}}
+                style={{ position: "absolute", left: "10px" }}
                 aria-label="Open menu"
               >
                 {/* <AiOutlineMenu /> */}
               </button>
             )}
-            
+
             {activeChat ? (
               <h3>Chatting with: {activeChat.repo_name}</h3>
             ) : (
               <h3>Select a repository to start chatting</h3>
             )}
           </div>
-          
+
           {showAddRepo ? (
             <div className="chat-areas">
               <Addnew onRepoAdded={handleRepoAdded} userId={userID} />
@@ -360,114 +400,44 @@ useEffect(() => {
             <main className="chat-area">
               <div className="chat-div">
                 <div className="messages">
-                  {messages.length > 0? ( messages.map((msg, i) => (
-                    <div key={i} className={`message ${msg.sender}`}>
-                      {msg.text}
-                    </div>
-                  )))
-                   :
-                   <div>No Repo links yet</div>}
+                  {messages.length > 0 ? (
+                    messages.map((msg, i) => (
+                      <div key={i} className={`message ${msg.sender}`}>
+                        {msg.text}
+                      </div>
+                    ))
+                  ) : (
+                    <div>No Repo links yet</div>
+                  )}
                 </div>
               </div>
               <div className="input-div">
-              {resultLoading ?           <div aria-label="Loading..." role="status" className="loader">
-  <svg className="icon" viewBox="0 0 256 256">
-    <line
-      x1="128"
-      y1="32"
-      x2="128"
-      y2="64"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="195.9"
-      y1="60.1"
-      x2="173.3"
-      y2="82.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="224"
-      y1="128"
-      x2="192"
-      y2="128"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="195.9"
-      y1="195.9"
-      x2="173.3"
-      y2="173.3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="128"
-      y1="224"
-      x2="128"
-      y2="192"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="60.1"
-      y1="195.9"
-      x2="82.7"
-      y2="173.3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="32"
-      y1="128"
-      x2="64"
-      y2="128"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-    <line
-      x1="60.1"
-      y1="60.1"
-      x2="82.7"
-      y2="82.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="24"
-    ></line>
-  </svg>
-  <span className="loading-text">Loading...</span>
-</div> : ""}
-              <div className="input-area">
+                {resultLoading ? (
+                  <p className="loading-text">{steps[stepIndex]}</p>
+                ) : (
+                  null
+                )}
 
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && send_message()}
-                  placeholder={
-                    activeChat
-                      ? "Send a message..."
-                      : "Select a repository first..."
-                  }
-                  disabled={!activeChat}
-                />
-                <button
-                  onClick={send_message}
-                  disabled={!activeChat || !input.trim()}
-                >
-                  <AiOutlineSend />
-                </button>
-              </div>
+                <div className="input-area">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && send_message()}
+                    placeholder={
+                      activeChat
+                        ? "Send a message..."
+                        : "Select a repository first..."
+                    }
+                    disabled={!activeChat}
+                  />
+                  <button
+                    onClick={send_message}
+                    disabled={!activeChat || !input.trim()}
+                  >
+                    <AiOutlineSend />
+                  </button>
+                </div>
               </div>
             </main>
           )}

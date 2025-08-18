@@ -67,7 +67,10 @@ input {
   flex-direction: column;
   transition: transform 0.3s ease;
   z-index: 1000;
+
 }
+
+
 
 .sidebar-header {
   margin-bottom: 1rem;
@@ -128,6 +131,14 @@ input {
   margin: 0;
   overflow-y: auto;
   flex: 1;
+  overflow-y: scroll;       
+  scrollbar-width: none;    
+  -ms-overflow-style: none;
+}
+
+
+.chat-list::-webkit-scrollbar {
+  display: none;            
 }
 
 .chat-list li {

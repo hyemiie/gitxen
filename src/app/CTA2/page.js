@@ -1,5 +1,6 @@
 import React from 'react'
 import './cta.css'
+import Link from 'next/link'
 
 const CTA2 = () => {
     return (
@@ -9,7 +10,7 @@ const CTA2 = () => {
                 <p>Chat with your repo like a teammate, get instant summaries and explanations, 
                 and understand every branch and commit in context</p>
                 {/* <p>Get instant context with AI summaries on every pull request,<br/> helping your team save time on code reviews.</p> */}
-                <button>Try it out </button>
+                <button><Link href = "/demo">Try it out</Link> </button>
             </div>
             <div className="git-div">
                 <div className="git-heading">

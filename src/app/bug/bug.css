@@ -63,6 +63,7 @@ body{
   background-color: var(--header-bg);
   height: 100vh;
   padding: 15px;
+  overflow-y: auto;
 }
 
 .bug-heading {

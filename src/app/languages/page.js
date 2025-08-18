@@ -1,5 +1,6 @@
 import Image from "next/image";
 import './language.css'
+import Link from "next/link";
 
 const languages = [
   {
@@ -38,7 +39,7 @@ export default function Languages() {
         ))}
       </div>
       <div className="btn-div">
-                            <button className="lang-btn">Get Started </button>
+                            <button className="lang-btn"><Link href="/login">Get Started </Link></button>
 </div>
 
     </div>
