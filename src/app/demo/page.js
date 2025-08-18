@@ -202,7 +202,6 @@ export default function Home() {
   }, []);
 
   const fetchRepos = async (user_id) => {
-    console.log("user id", user_id);
     setLoading(true);
     setError(null);
 
@@ -215,8 +214,6 @@ export default function Home() {
           },
         }
       );
-      console.log("fcvgbhn", response);
-
       setChats(response.data.repos);
     } catch (err) {
       if (err.response) {

@@ -14,7 +14,6 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-      console.log('token', token)
     if (!token) {
     window.location.href = "/login";
     return;
@@ -22,7 +21,6 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
     if (token) { 
       try {
         const decoded = jwtDecode(token);
-        console.log("token", decoded)
         let user_id = decoded.sub;
        user_id = Number(user_id ?? decoded.user?.id);
 
@@ -56,7 +54,6 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
         repo_path: repo, 
       });
       
-      console.log('repo_name', analyzeResponse);
       const repoName = analyzeResponse.data.repo_name;
       setRepoList(repoName);
 
@@ -67,7 +64,6 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
         repo_name: repoName,
         repo_link: repo
       });
-      console.log('save response',saveResponse)
 
       setStatus('Analysis complete!');
       
