@@ -172,6 +172,7 @@
   font-size: 16px;
   transition: all 0.2s ease;
   background-color: #fefefe;
+  color: black;
 }
 
 .form-input:focus {
