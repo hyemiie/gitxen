@@ -38,7 +38,7 @@ const AuthComponent = () => {
         : { email: formData.username, password: formData.password };
 
       const response = await axios.post(
-        `https://git-chat.zeabur.app${endpoint}`,
+        `https://git-chat-tcu7.onrender.com${endpoint}`,
         payload
       );
       const result = response.data;
@@ -73,7 +73,7 @@ const AuthComponent = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://git-chat.zeabur.app/google/login";
+    window.location.href = "https://git-chat-tcu7.onrender.com/google/login";
   };
 
   const toggleMode = () => {

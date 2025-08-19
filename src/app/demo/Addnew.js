@@ -54,7 +54,7 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
       setIsLoading(true);
       setStatus('Cloning repository...');
 
-      const analyzeResponse = await axios.post('https://git-chat.zeabur.app/analyze-repo', {
+      const analyzeResponse = await axios.post('https://git-chat-tcu7.onrender.com/analyze-repo', {
         repo_path: repo, 
       });
       
@@ -63,7 +63,7 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
 
       setStatus('Saving repository...');
 
-      const saveResponse = await axios.post('https://git-chat.zeabur.app/repos/', {
+      const saveResponse = await axios.post('https://git-chat-tcu7.onrender.com/repos/', {
         user_id:user,
         repo_name: repoName,
         repo_link: repo
