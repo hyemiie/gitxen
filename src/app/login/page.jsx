@@ -35,7 +35,7 @@ const AuthComponent = () => {
       const endpoint = isLogin ? "/login" : "/signup";
       const payload = isLogin
         ? { email: formData.email, password: formData.password }
-        : { email: formData.username, password: formData.password };
+        : { email: formData.email, password: formData.password };
 
       const response = await axios.post(
         `https://git-chat-tcu7.onrender.com${endpoint}`,
@@ -145,18 +145,18 @@ const AuthComponent = () => {
           <form onSubmit={handleSubmit} className="auth-form">
             {!isLogin && (
               <div className="input-group">
-                <label htmlFor="username" className="input-label">
-                  Username
+                <label htmlFor="email" className="input-label">
+                  Email
                 </label>
                 <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleInputChange}
                   className="form-input"
                   required={!isLogin}
-                  placeholder="Enter your username"
+                  placeholder="Enter your email"
                 />
               </div>
             )}
