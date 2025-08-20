@@ -81,49 +81,105 @@ export default function Home() {
     }
   };
 
+  // const send_message = async () => {
+  //   setResultLoading(true)
+  //   if (!input.trim() || !repo) return;
+
+  //   const userMessage = { sender: "user", text: input };
+  //   setMessages((prev) => [...prev, userMessage]);
+
+  //   const currentInput = input;
+  //   setInput("");
+
+  //   if (activeChat) {
+  //     await saveChatMessage(activeChat.id, "user", currentInput);
+  //   }
+
+  //   try {
+  //     const response = await axios.post("https://git-chat-tcu7.onrender.com/embed-repo", {
+  //       repo_path: repo,
+  //       query: currentInput,
+  //     });
+
+  //     const summary = response.data.result.summary;
+  //     const aiMessage = { sender: "ai", text: summary };
+
+  //     setMessages((prev) => [...prev, aiMessage]);
+  //     setResultLoading(false);
+
+  //     if (activeChat) {
+  //       await saveChatMessage(activeChat.id, "ai", summary);
+  //     }
+  //   } catch (error) {
+  //     setResultLoading(false);
+  //     console.error("Error sending message:", error);
+  //     const errorMessage = {
+  //       sender: "ai",
+  //       text: "⚠️ Something went wrong while processing your request.",
+  //     };
+  //     setMessages((prev) => [...prev, errorMessage]);
+
+  //     if (activeChat) {
+  //       await saveChatMessage(activeChat.id, "ai", errorMessage.text);
+  //     }
+  //   }
+  // };
+
   const send_message = async () => {
-    setResultLoading(true)
-    if (!input.trim() || !repo) return;
+  if (!input.trim() || !repo) return;
 
-    const userMessage = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
+  setResultLoading(true);
 
-    const currentInput = input;
-    setInput("");
+  const userMessage = { sender: "user", text: input };
+  setMessages((prev) => [...prev, userMessage]);
+
+  const currentInput = input;
+  setInput("");
+
+  if (activeChat) {
+    await saveChatMessage(activeChat.id, "user", currentInput);
+  }
+
+  try {
+    let repoId = activeChat?.repo_id;
+    if (!repoId) {
+      const embedResponse = await axios.post("https://git-chat-tcu7.onrender.com/embed-repo", {
+        repo_path: repo,
+      });
+      repoId = embedResponse.data.repo_id;
+
+      setActiveChat((prev) => ({ ...prev, repo_id: repoId }));
+    }
+
+    const response = await axios.post("https://git-chat-tcu7.onrender.com/analyze-query", {
+      repo_id: repoId,
+      query: currentInput,
+    });
+
+    const summary = response.data.summary;
+    const aiMessage = { sender: "ai", text: summary };
+
+    setMessages((prev) => [...prev, aiMessage]);
+    setResultLoading(false);
 
     if (activeChat) {
-      await saveChatMessage(activeChat.id, "user", currentInput);
+      await saveChatMessage(activeChat.id, "ai", summary);
     }
+  } catch (error) {
+    setResultLoading(false);
+    console.error("Error sending message:", error);
+    const errorMessage = {
+      sender: "ai",
+      text: "⚠️ Something went wrong while processing your request.",
+    };
+    setMessages((prev) => [...prev, errorMessage]);
 
-    try {
-      const response = await axios.post("https://git-chat-tcu7.onrender.com/embed-repo", {
-        repo_path: repo,
-        query: currentInput,
-      });
-
-      const summary = response.data.result.summary;
-      const aiMessage = { sender: "ai", text: summary };
-
-      setMessages((prev) => [...prev, aiMessage]);
-      setResultLoading(false);
-
-      if (activeChat) {
-        await saveChatMessage(activeChat.id, "ai", summary);
-      }
-    } catch (error) {
-      setResultLoading(false);
-      console.error("Error sending message:", error);
-      const errorMessage = {
-        sender: "ai",
-        text: "⚠️ Something went wrong while processing your request.",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-
-      if (activeChat) {
-        await saveChatMessage(activeChat.id, "ai", errorMessage.text);
-      }
+    if (activeChat) {
+      await saveChatMessage(activeChat.id, "ai", errorMessage.text);
     }
-  };
+  }
+};
+
 
   const saveChatMessage = async (repoId, sender, messageText) => {
     const user_id = parseInt(userID);
@@ -154,6 +210,7 @@ export default function Home() {
           repo_id: parseInt(repoId),
         }
       );
+      console.log('response', response)
 
       if (response.data.status === "success" && response.data.data.length > 0) {
         const messages = response.data.data.map((msg) => ({
@@ -243,6 +300,7 @@ export default function Home() {
     fetchRepos(newRepo.user_id);
     // setChats((prev) => [...prev, newRepo]);
     setRepo(newRepo.repo_link);
+    handleRepoSelection(newRepo)
     setActiveChat(newRepo);
     setMessages([
       {
