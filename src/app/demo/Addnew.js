@@ -1,32 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import './addnew.css';
-import { AiOutlineSend } from 'react-icons/ai';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import React, { useEffect, useState } from "react";
+import "./addnew.css";
+import { AiOutlineSend } from "react-icons/ai";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
-const Addnew = ({ onRepoAdded, userId = 1 }) => { 
-  const [repo, setRepo] = useState('');
-  const [status, setStatus] = useState('');
+const Addnew = ({ onRepoAdded, userId = 1 }) => {
+  const [repo, setRepo] = useState("");
+  const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState("");
   const [repo_list, setRepoList] = useState(false);
 
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-    window.location.href = "/login";
-    return;
-  }
-    if (token) { 
+      window.location.href = "/login";
+      return;
+    }
+    if (token) {
       try {
         const decoded = jwtDecode(token);
         let user_id = Number(decoded.sub);
-        if (!user_id){
-
+        if (!user_id) {
           user_id = Number(decoded.user?.id);
         }
-
 
         if (!Number.isInteger(user_id)) {
           throw new Error("Invalid user_id");
@@ -41,58 +38,94 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
         console.warn("Failed to decode token:", err);
       }
     }
-
   }, []);
+
+  async function repoExists(repoUrl) {
+    try {
+      const parts = repoUrl.replace("https://github.com/", "").split("/");
+      if (parts.length < 2) return false;
+
+      const user = parts[0];
+      const repo = parts[1];
+      const response = await fetch(
+        `https://api.github.com/repos/${user}/${repo}`
+      );
+
+      return response.status === 200;
+    } catch (err) {
+      return false;
+    }
+  }
+  function isValidGithubRepo(url) {
+    const regex = /^https:\/\/github\.com\/[\w-]+\/[\w.-]+$/;
+    return regex.test(url);
+  }
 
   const handleSends = async () => {
     if (!repo.trim()) {
-      setStatus('Please enter a valid repo URL.');
+      setStatus("Please enter a valid repo URL.");
       return;
     }
 
+    if (!isValidGithubRepo(repo)) {
+      alert("Invalid GitHub URL format");
+    } else if (!(await repoExists(repo))) {
+      alert("This repo does not exist or is private");
+    } else {
+      console.log("Repo is valid and public ✅");
+    }
+    
     try {
       setIsLoading(true);
-      setStatus('Cloning repository...');
+      setStatus("Cloning repository...");
 
-      const analyzeResponse = await axios.post('https://git-chat-tcu7.onrender.com/analyze-repo', {
-        repo_path: repo, 
-      });
-      
+      const analyzeResponse = await axios.post(
+        "https://git-chat-tcu7.onrender.com/analyze-repo",
+        {
+          repo_path: repo,
+          query: null,
+        }
+      );
+
       const repoName = analyzeResponse.data.repo_name;
       setRepoList(repoName);
 
-      setStatus('Saving repository...');
+      setStatus("Saving repository...");
 
-      const saveResponse = await axios.post('https://git-chat-tcu7.onrender.com/repos/', {
-        user_id:user,
-        repo_name: repoName,
-        repo_link: repo
-      });
+      const saveResponse = await axios.post(
+        "https://git-chat-tcu7.onrender.com/repos/",
+        {
+          user_id: user,
+          repo_name: repoName,
+          repo_link: repo,
+        }
+      );
 
-      setStatus('Analysis complete!');
-      
+      setStatus("Analysis complete!");
+
       if (onRepoAdded) {
         onRepoAdded({
           name: repoName,
           repo_link: repo,
-          user_id: userId
+          user_id: userId,
         });
       }
 
-      setRepo('');
-      
+      setRepo("");
+
       setTimeout(() => {
-        setStatus('Repository added successfully!');
+        setStatus("Repository added successfully!");
         setIsLoading(false);
       }, 1000);
-
     } catch (error) {
       if (error.response) {
-        setStatus(`Error: ${error.response.data.detail || 'Something went wrong'}`);
+        setStatus(
+          `Error: ${error.response.data.detail || "Something went wrong"}`
+        );
       } else if (error.request) {
-        setStatus('Network error. Please check your connection.');
+        setStatus("Network error. Please check your connection.");
       } else {
-        setStatus('Something went wrong. Please try again.');
+        setStatus("Something went wrong. Please try again.");
       }
       setIsLoading(false);
       console.error(error);
@@ -100,30 +133,32 @@ const Addnew = ({ onRepoAdded, userId = 1 }) => {
   };
 
   return (
-    <div className='addnewPage'>
+    <div className="addnewPage">
       <h2>Hello</h2>
       <h2>What repo would you like to analyze?</h2>
 
-      <div className='newBtndiv'>
+      <div className="newBtndiv">
         <input
-          className='newInput'
-          type='text'
-          placeholder='Enter GitHub repo path'
+          className="newInput"
+          type="text"
+          placeholder="Enter GitHub repo path"
           value={repo}
           onChange={(e) => setRepo(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSends()}
+          onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSends()}
         />
         <button onClick={handleSends} disabled={isLoading}>
-          <AiOutlineSend className='send' />
+          <AiOutlineSend className="send" />
         </button>
       </div>
 
       {status && (
-        <p style={{ 
-          marginTop: '20px', 
-          fontWeight: '500',
-          color: status.includes('Error') ? '#ff4444' : '#333'
-        }}>
+        <p
+          style={{
+            marginTop: "20px",
+            fontWeight: "500",
+            color: status.includes("Error") ? "#ff4444" : "#333",
+          }}
+        >
           {status}
         </p>
       )}

@@ -43,7 +43,7 @@ const BugPage = () => {
 
     try {
       const response = await axios.post(
-        "https://bug-identifier.zeabur.app/find-bug",
+        "https://bug-identifier-25aa.onrender.com/find-bug",
         {
           code_snippet: code,
           language: selectedLanguage,

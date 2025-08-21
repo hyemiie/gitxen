@@ -13,6 +13,7 @@ import axios from "axios";
 import Addnew from "./Addnew";
 import Link from "next/link";
 import { jwtDecode } from "jwt-decode";
+import CountdownLoader from "./Countdown";
 
 export default function Home() {
   const [chats, setChats] = useState([]);
@@ -128,6 +129,11 @@ export default function Home() {
   const send_message = async () => {
   if (!input.trim() || !repo) return;
 
+  if(!activeChat){
+    alert("Please choose a repo")
+    return;
+  }
+
   setResultLoading(true);
 
   const userMessage = { sender: "user", text: input };
@@ -139,7 +145,7 @@ export default function Home() {
   if (activeChat) {
     await saveChatMessage(activeChat.id, "user", currentInput);
   }
-
+console.log("it", activeChat)
   try {
     let repoId = activeChat?.repo_id;
     if (!repoId) {
@@ -203,6 +209,7 @@ export default function Home() {
   };
 
   const loadChatHistory = async (repoId) => {
+    console.log('repo id', repoId)
     try {
       const response = await axios.post(
         "https://git-chat-tcu7.onrender.com/chat/list",
@@ -300,7 +307,7 @@ export default function Home() {
     fetchRepos(newRepo.user_id);
     // setChats((prev) => [...prev, newRepo]);
     setRepo(newRepo.repo_link);
-    handleRepoSelection(newRepo)
+    // handleRepoSelection(newRepo)
     setActiveChat(newRepo);
     setMessages([
       {
@@ -309,6 +316,8 @@ export default function Home() {
       },
     ]);
     setShowAddRepo(false);
+    alert("please go to the list to select a repo")
+    setVisibility(true)
 
     if (isMobile) {
       setShowMobileOverlay(false);
@@ -473,6 +482,10 @@ export default function Home() {
                 ) : (
                   null
                 )}
+                {resultLoading ? (
+                  <CountdownLoader/>
+                )
+                : null}
 
                 <div className="input-area">
                   <input
