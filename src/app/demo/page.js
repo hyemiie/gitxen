@@ -44,7 +44,7 @@ export default function Home() {
           i++;
           setStepIndex(i);
         }
-      }, 1500); // 1.5s per step
+      }, 1500); 
       return () => clearInterval(interval);
     } else {
       setStepIndex(0);
@@ -81,50 +81,7 @@ export default function Home() {
       setShowMobileOverlay(false);
     }
   };
-
-  // const send_message = async () => {
-  //   setResultLoading(true)
-  //   if (!input.trim() || !repo) return;
-
-  //   const userMessage = { sender: "user", text: input };
-  //   setMessages((prev) => [...prev, userMessage]);
-
-  //   const currentInput = input;
-  //   setInput("");
-
-  //   if (activeChat) {
-  //     await saveChatMessage(activeChat.id, "user", currentInput);
-  //   }
-
-  //   try {
-  //     const response = await axios.post("https://git-chat-tcu7.onrender.com/embed-repo", {
-  //       repo_path: repo,
-  //       query: currentInput,
-  //     });
-
-  //     const summary = response.data.result.summary;
-  //     const aiMessage = { sender: "ai", text: summary };
-
-  //     setMessages((prev) => [...prev, aiMessage]);
-  //     setResultLoading(false);
-
-  //     if (activeChat) {
-  //       await saveChatMessage(activeChat.id, "ai", summary);
-  //     }
-  //   } catch (error) {
-  //     setResultLoading(false);
-  //     console.error("Error sending message:", error);
-  //     const errorMessage = {
-  //       sender: "ai",
-  //       text: "⚠️ Something went wrong while processing your request.",
-  //     };
-  //     setMessages((prev) => [...prev, errorMessage]);
-
-  //     if (activeChat) {
-  //       await saveChatMessage(activeChat.id, "ai", errorMessage.text);
-  //     }
-  //   }
-  // };
+ 
 
   const send_message = async () => {
   if (!input.trim() || !repo) return;
@@ -149,7 +106,7 @@ console.log("it", activeChat)
   try {
     let repoId = activeChat?.repo_id;
     if (!repoId) {
-      const embedResponse = await axios.post("https://git-chat-tcu7.onrender.com/embed-repo", {
+      const embedResponse = await axios.post("http://127.0.0.1:8000/embed-repo", {
         repo_path: repo,
       });
       repoId = embedResponse.data.repo_id;
@@ -157,14 +114,14 @@ console.log("it", activeChat)
       setActiveChat((prev) => ({ ...prev, repo_id: repoId }));
     }
 
-    const response = await axios.post("https://git-chat-tcu7.onrender.com/analyze-query", {
+    const response = await axios.post("http://127.0.0.1:8000/analyze-query", {
       repo_id: repoId,
       query: currentInput,
     });
 
     const summary = response.data.summary;
     const aiMessage = { sender: "ai", text: summary };
-
+console.log("ai message", aiMessage)
     setMessages((prev) => [...prev, aiMessage]);
     setResultLoading(false);
 
@@ -192,7 +149,7 @@ console.log("it", activeChat)
 
     try {
       const response = await axios.post(
-        "https://git-chat-tcu7.onrender.com/chat/add",
+        "http://127.0.0.1:8000/chat/add",
         {
           user_id: user_id,
           repo_id: repoId,
@@ -212,7 +169,7 @@ console.log("it", activeChat)
     console.log('repo id', repoId)
     try {
       const response = await axios.post(
-        "https://git-chat-tcu7.onrender.com/chat/list",
+        "http://127.0.0.1:8000/chat/list",
         {
           repo_id: parseInt(repoId),
         }
@@ -236,8 +193,23 @@ console.log("it", activeChat)
     }
   };
 
+  const getToken = () => {
+  const token = localStorage.getItem('token');
+  const expiry = localStorage.getItem('tokenExpiry');
+  
+  if (!token || !expiry) return null;
+  
+  if (Date.now() > expiry) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpiry');
+    return null;
+  }
+  
+  return token;
+};
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (!token) {
       window.location.href = "/login";
       return;
@@ -271,7 +243,7 @@ console.log("it", activeChat)
 
     try {
       const response = await axios.get(
-        "https://git-chat-tcu7.onrender.com/repos/list",
+        "http://127.0.0.1:8000/repos/list",
         {
           params: {
             user_id: parseInt(user_id),
@@ -446,20 +418,6 @@ console.log("it", activeChat)
           {showAddRepo ? (
             <div className="chat-areas">
               <Addnew onRepoAdded={handleRepoAdded} userId={userID} />
-              {/* <button
-                className="mt-4 text-sm text-blue-600 underline"
-                onClick={() => setShowAddRepo(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#2563eb',
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                  marginTop: '1rem'
-                }}
-              >
-                ← Back to Chat
-              </button> */}
             </div>
           ) : (
             <main className="chat-area">

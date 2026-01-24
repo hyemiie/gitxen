@@ -29,35 +29,6 @@ body {
   animation: grid-move 20s linear infinite;
 }
 
-/* .heropage {
-  min-height: 100vh;
-  background: 
-    radial-gradient(ellipse at top left, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at center, rgba(168, 85, 247, 0.05) 0%, transparent 70%),
-    linear-gradient(135deg, #0a0c10 0%, #111827 50%, #0f172a 100%);
-  position: relative;
-}
-
-.heropage::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    linear-gradient(rgba(34, 197, 94, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  pointer-events: none;
-  animation: grid-move 20s linear infinite;
-}
-
-@keyframes grid-move {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(50px, 50px); }
-} */
 
 @keyframes grid-move {
   0% { transform: translate(0, 0); }

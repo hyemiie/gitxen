@@ -8,53 +8,6 @@ export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
-// useEffect(() => {
-//   const token = localStorage.getItem("token");
-//   const decoded = jwtDecode(token);
-
-//   let user_id = decoded.sub;
-
-//   if (!Number.isInteger(user_id)) {
-//     user_id = decoded.user?.id;
-//   }
-
-//   user_id = parseInt(user_id, 10); 
-
-//   if (user_id) {
-//     setLoggedIn(true);
-//   } else {
-//     console.warn("No user ID found in localStorage");
-//   }
-// }, []);
-
-
-// useEffect(() => {
-//   const token = localStorage.getItem("token");
-
-//   if (token && typeof token === "string") {
-//     try {
-//       const decoded = jwtDecode(token);
-//       let user_id = decoded.sub;
-
-//       if (!Number.isInteger(user_id)) {
-//         user_id = decoded.user?.id;
-//       }
-
-//       user_id = parseInt(user_id, 10);
-
-//       if (user_id) {
-//         setLoggedIn(true);
-//       } else {
-//         console.warn("No user ID found in token");
-//       }
-//     } catch (err) {
-//       console.warn("Failed to decode token:", err);
-//     }
-//   }
-// }, []);
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -110,12 +63,12 @@ Git Chat
         
         }
 
-        <Link href="/bug" className="nav-button demo" onClick={() => setMenuOpen(false)}>
+        {/* <Link href="/bug" className="nav-button demo" onClick={() => setMenuOpen(false)}>
           Bug Identifier
-        </Link>
+        </Link> */}
         
         <Link href="/login" className="nav-button login" onClick={() => setMenuOpen(false)}>
-          Login
+          Get Started
         </Link>
       </div>
     </nav>

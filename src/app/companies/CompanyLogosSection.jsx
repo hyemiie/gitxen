@@ -84,7 +84,6 @@ const CompanyLogosSection = () => {
                 {company.logo}
               </div>
             ))}
-            {/* Duplicate set for seamless loop */}
             {companies.map((company, index) => (
               <div key={`second-${index}`} className="logo-item">
                 {company.logo}
@@ -92,25 +91,7 @@ const CompanyLogosSection = () => {
             ))}
           </div>
         </div>
-        
-        {/* <div className="stats-row">
-          <div className="stat-item">
-            <div className="stat-number">500K+</div>
-            <div className="stat-label">Active Users</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-number">150+</div>
-            <div className="stat-label">Countries</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-number">99.9%</div>
-            <div className="stat-label">Uptime</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-number">24/7</div>
-            <div className="stat-label">Support</div>
-          </div>
-        </div> */}
+      
       </div>
     </div>
   );

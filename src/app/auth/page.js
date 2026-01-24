@@ -7,13 +7,20 @@ function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+
+  const saveToken = (token) => {
+  const expiryTime = Date.now() + 60 * 60 * 1000; // 1 hour from now
+  localStorage.setItem('token', token);
+  localStorage.setItem('tokenExpiry', expiryTime);
+};
+
   useEffect(() => {
     if (!searchParams) return;
 
     const token = searchParams.get("token");
 
     if (token && typeof token === "string") {
-      localStorage.setItem("token", token);
+    saveToken(token)
       router.push("/demo");
     } else {
       if (window.location.pathname === "/auth/callback") {

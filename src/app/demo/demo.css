@@ -191,8 +191,7 @@ input {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding-bottom: 90px !important;
-
+  padding-bottom: 100px !important;
   scrollbar-width: none; 
   -ms-overflow-style: none;
 }
@@ -209,6 +208,7 @@ input {
   border-radius: 8px;
   line-height: 1.4;
   word-wrap: break-word;
+  padding-bottom: 10px;
 }
 
 .message.user {

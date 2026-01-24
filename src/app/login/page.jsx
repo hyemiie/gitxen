@@ -56,7 +56,8 @@ const AuthComponent = () => {
         }
 
         if (endpoint === "/login") {
-          localStorage.setItem("token", result.token);
+          saveToken(result.token)
+          // localStorage.setItem("token", result.token);
           setMessage(result.message);
           window.location.href = "/demo";
 
@@ -71,6 +72,13 @@ const AuthComponent = () => {
       setLoading(false);
     }
   };
+
+  const saveToken = (token) => {
+  const expiryTime = Date.now() + 60 * 60 * 1000;
+  localStorage.setItem('token', token);
+  localStorage.setItem('tokenExpiry', expiryTime);
+};
+
 
   const handleGoogleLogin = () => {
     window.location.href = "https://git-chat-tcu7.onrender.com/google/login";
@@ -125,7 +133,7 @@ const AuthComponent = () => {
             </div>
           </div>
           <h3 className="subtext">
-            Join thousands creating AI-powered meeting experiences
+            Join hundreds exploring AI-powered insights
           </h3>
         </div>
       </div>

@@ -8,15 +8,6 @@
   justify-content: space-between;
 }
 
-/* .cta-text{
-  background-color: pink;
-  display: flex;
-  align-items: first baseline !important;
-  flex-direction: column;
-  justify-content: right !important;
-
-} */
-
 .cta-text2 {
   padding: 30px;
   width: 50%;
@@ -132,10 +123,6 @@ button:active {
 
 @media (max-width: 1024px) {
   .cta-div {
-    /* grid-template-columns: 1fr;
-    gap: 3rem;
-    text-align: center;
-    background-color: khaki; */
     flex-direction: column;
   }
  .cta-text2 h2{
