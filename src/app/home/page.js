@@ -28,7 +28,14 @@ const Page = () => {
         understand projects faster, and keep your team in sync
         </p>
 
+<<<<<<< HEAD
     
+=======
+        {/* <div className="btns">
+          <button className="chatBtn">Git Chat</button>
+          <button>Bug finder</button>
+        </div> */}
+>>>>>>> 91c84da0022224945dcc1d5eadde74e399b5a763
        <div className="inputDiv">
   <div className="inputtext">
     <div style={{ position: "relative", width: "100%" }}>

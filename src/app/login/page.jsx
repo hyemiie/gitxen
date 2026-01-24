@@ -56,8 +56,12 @@ const AuthComponent = () => {
         }
 
         if (endpoint === "/login") {
+<<<<<<< HEAD
           saveToken(result.token)
           // localStorage.setItem("token", result.token);
+=======
+          localStorage.setItem("token", result.token);
+>>>>>>> 91c84da0022224945dcc1d5eadde74e399b5a763
           setMessage(result.message);
           window.location.href = "/demo";
 
@@ -73,6 +77,7 @@ const AuthComponent = () => {
     }
   };
 
+<<<<<<< HEAD
   const saveToken = (token) => {
   const expiryTime = Date.now() + 60 * 60 * 1000;
   localStorage.setItem('token', token);
@@ -80,6 +85,8 @@ const AuthComponent = () => {
 };
 
 
+=======
+>>>>>>> 91c84da0022224945dcc1d5eadde74e399b5a763
   const handleGoogleLogin = () => {
     window.location.href = "https://git-chat-tcu7.onrender.com/google/login";
   };
@@ -133,7 +140,11 @@ const AuthComponent = () => {
             </div>
           </div>
           <h3 className="subtext">
+<<<<<<< HEAD
             Join hundreds exploring AI-powered insights
+=======
+            Join thousands creating AI-powered meeting experiences
+>>>>>>> 91c84da0022224945dcc1d5eadde74e399b5a763
           </h3>
         </div>
       </div>

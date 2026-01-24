@@ -414,6 +414,23 @@ export default function Home() {
           {showAddRepo ? (
             <div className="chat-areas">
               <Addnew onRepoAdded={handleRepoAdded} userId={userID} />
+<<<<<<< HEAD
+=======
+              {/* <button
+                className="mt-4 text-sm text-blue-600 underline"
+                onClick={() => setShowAddRepo(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#2563eb',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  marginTop: '1rem'
+                }}
+              >
+                ← Back to Chat
+              </button> */}
+>>>>>>> 91c84da0022224945dcc1d5eadde74e399b5a763
             </div>
           ) : (
             <main className="chat-area">

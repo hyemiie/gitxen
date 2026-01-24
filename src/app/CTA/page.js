@@ -27,7 +27,15 @@ const CTA = () => {
                 <div className="git-content">
                     <h3>Features</h3>
                     <span className="span1">.</span>
+<<<<<<< HEAD
                 </div>                
+=======
+                </div>
+                {/* <div className="git-content">
+                    <h3>Improvements</h3>
+                    <span className="span3">.</span>
+                </div> */}
+>>>>>>> 91c84da0022224945dcc1d5eadde74e399b5a763
             </div>
         </div>
     )
