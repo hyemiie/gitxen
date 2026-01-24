@@ -102,11 +102,10 @@ export default function Home() {
   if (activeChat) {
     await saveChatMessage(activeChat.id, "user", currentInput);
   }
-console.log("it", activeChat)
   try {
     let repoId = activeChat?.repo_id;
     if (!repoId) {
-      const embedResponse = await axios.post("http://127.0.0.1:8000/embed-repo", {
+      const embedResponse = await axios.post("https://git-chat-tcu7.onrender.com/embed-repo", {
         repo_path: repo,
       });
       repoId = embedResponse.data.repo_id;
@@ -114,14 +113,13 @@ console.log("it", activeChat)
       setActiveChat((prev) => ({ ...prev, repo_id: repoId }));
     }
 
-    const response = await axios.post("http://127.0.0.1:8000/analyze-query", {
+    const response = await axios.post("https://git-chat-tcu7.onrender.com/analyze-query", {
       repo_id: repoId,
       query: currentInput,
     });
 
     const summary = response.data.summary;
     const aiMessage = { sender: "ai", text: summary };
-console.log("ai message", aiMessage)
     setMessages((prev) => [...prev, aiMessage]);
     setResultLoading(false);
 
@@ -149,7 +147,7 @@ console.log("ai message", aiMessage)
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/chat/add",
+        "https://git-chat-tcu7.onrender.com/chat/add",
         {
           user_id: user_id,
           repo_id: repoId,
@@ -166,15 +164,13 @@ console.log("ai message", aiMessage)
   };
 
   const loadChatHistory = async (repoId) => {
-    console.log('repo id', repoId)
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/chat/list",
+        "https://git-chat-tcu7.onrender.com/chat/list",
         {
           repo_id: parseInt(repoId),
         }
       );
-      console.log('response', response)
 
       if (response.data.status === "success" && response.data.data.length > 0) {
         const messages = response.data.data.map((msg) => ({
@@ -243,7 +239,7 @@ console.log("ai message", aiMessage)
 
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/repos/list",
+        "https://git-chat-tcu7.onrender.com/repos/list",
         {
           params: {
             user_id: parseInt(user_id),
